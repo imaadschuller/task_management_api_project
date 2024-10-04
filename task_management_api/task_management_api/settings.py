@@ -100,7 +100,6 @@ if "CLEARDB_DATABASE_URL" in os.environ:
     DATABASES["default"] = dj_database_url.config(
         default='mysql://b1e2f6253bdec5:7ef49b60@us-cluster-east-01.k8s.cleardb.net/heroku_af49c797f89c01e',
         conn_max_age=600,
-        ssl_require=True
 )
 
 
