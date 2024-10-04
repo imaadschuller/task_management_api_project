@@ -81,8 +81,22 @@ WSGI_APPLICATION = 'task_management_api.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'task_management_db',
+        'USER': 'User1',
+        'PASSWORD': 'mysqlpassword',
+        'HOST': 'localhost',
+        'PORT': '3306',
+    }
 }
+
+# Update DATABASES for Heroku
+DATABASES["default"] = dj_database_url.config(
+    default="mysql://User1:mysqlpassword@localhost:3306/task_management_db",
+    conn_max_age=600,
+    ssl_require=False
+)
 
 
 # Password validation
@@ -119,8 +133,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
