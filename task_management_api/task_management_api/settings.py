@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'tasks',
+    'task_management_api',
     'rest_framework',
     'django_filters',
     'django_celery_beat',
