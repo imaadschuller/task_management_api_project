@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'tasks',
+    'task_management_api.tasks',
     'task_management_api',
     'rest_framework',
     'django_filters',
@@ -58,7 +58,7 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
-ROOT_URLCONF = 'task_management_api.urls'
+ROOT_URLCONF = 'task_management_api.task_management_api.urls'
 
 TEMPLATES = [
     {
