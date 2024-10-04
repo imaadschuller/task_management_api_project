@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 import os
+from urllib.parse import urlparse
 from pathlib import Path
 import dj_database_url
 
@@ -25,9 +26,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-m)0j%9i&k6-h6y4zm=47g1m274ri1d^f7z(iiiu8h&i7c@gc_m'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DEBUG", "") != "False"
 
-ALLOWED_HOSTS = ['taskmanagementapi.herokuapp.com']
+ALLOWED_HOSTS = ['taskmanagementapi.herokuapp.com', 'localhost', "127.0.0.1"]
 
 
 # Application definition
@@ -81,6 +82,8 @@ WSGI_APPLICATION = 'task_management_api.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+url = urlparse(os.environ.get('CLEARDB_DATABASE_URL'))
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -92,11 +95,12 @@ DATABASES = {
     }
 }
 
-# Update DATABASES for Heroku
-DATABASES["default"] = dj_database_url.config(
-    default="mysql://User1:mysqlpassword@localhost:3306/task_management_db",
-    conn_max_age=600,
-    ssl_require=False
+# Update DATABASES for Heroku using ClearDB
+if "CLEARDB_DATABASE_URL" in os.environ:
+    DATABASES["default"] = dj_database_url.config(
+        default='mysql://b1e2f6253bdec5:7ef49b60@us-cluster-east-01.k8s.cleardb.net/heroku_af49c797f89c01e',
+        conn_max_age=600,
+        ssl_require=True
 )
 
 
@@ -136,7 +140,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -160,8 +164,8 @@ REST_FRAMEWORK = {
 }
 
 # Celery Configuration
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_BROKER_URL =  os.environ.get('REDIS_URL','redis://localhost:6379/0')
+CELERY_RESULT_BACKEND =  os.environ.get('REDIS_URL','redis://localhost:6379/0')
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
