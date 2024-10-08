@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'django_celery_beat',
+    'djoser',
+    'django.contrib.sites',
 ]
 
 MIDDLEWARE = [

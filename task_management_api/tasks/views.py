@@ -9,6 +9,10 @@ from rest_framework.decorators import action
 from rest_framework.exceptions import NotFound, ValidationError
 from django.utils import timezone
 from django.db.models import Q
+from djoser.views import UserViewSet
+from rest_framework.decorators import api_view
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.authtoken.models import Token
 
 # Viewset for User model that allows for CRUD operations
 class UserViewSet(viewsets.ModelViewSet):
@@ -81,3 +85,19 @@ class TaskCategoryViewSet(viewsets.ModelViewSet):
             serializer.save(user=self.request.user)
         except ValidationError as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def custom_register(request):
+    """
+    This view handles user registration at /api/register/
+    """
+    user_viewset = UserViewSet.as_view({'post': 'create'})
+    return user_viewset(request)
+
+@api_view(['POST'])
+def custom_login(request):
+    """
+    This view handles user login at /api/login/
+    """
+    obtain_auth_token_view = ObtainAuthToken.as_view()
+    return obtain_auth_token_view(request)
