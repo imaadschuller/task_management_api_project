@@ -46,7 +46,6 @@ INSTALLED_APPS = [
     'django_filters',
     'django_celery_beat',
     'djoser',
-    'django.contrib.sites',
 ]
 
 MIDDLEWARE = [
@@ -171,5 +170,3 @@ CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'UTC'
-
-SITE_ID = 1
