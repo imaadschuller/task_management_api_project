@@ -86,14 +86,16 @@ class TaskCategoryViewSet(viewsets.ModelViewSet):
         except ValidationError as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+# Custom view to handle user registration
 @api_view(['POST'])
 def custom_register(request):
-    """
-    This view handles user registration at /api/register/
-    """
-    user_viewset = UserViewSet.as_view({'post': 'create'})
-    return user_viewset(request)
+    serializer = UserSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+# Custom view to handle user login
 @api_view(['POST'])
 def custom_login(request):
     """
