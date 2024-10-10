@@ -5,12 +5,13 @@ from .models import Task, TaskCategory
 from .serializers import TaskSerializer, UserSerializer, TaskCategorySerializer
 from django.contrib.auth.models import User
 from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
 from rest_framework.decorators import action
 from rest_framework.exceptions import NotFound, ValidationError
 from django.utils import timezone
 from django.db.models import Q
 from djoser.views import UserViewSet
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 
@@ -88,6 +89,7 @@ class TaskCategoryViewSet(viewsets.ModelViewSet):
 
 # Custom view to handle user registration
 @api_view(['POST'])
+@permission_classes([AllowAny])
 def custom_register(request):
     serializer = UserSerializer(data=request.data)
     if serializer.is_valid():
